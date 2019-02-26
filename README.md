@@ -20,7 +20,7 @@ A hashicorp xml file is configured with a `<hashicorp-vault:config>` tag, for ex
 	</hashicorp-vault:config>
 ```
 
-In this example, three values are passed into the Mule runtime at deployment time as a system environment variables `vaultTokenEnvironmentVariable`, `truststorePasswordEnvironmentVariable` and `env`. These properties must be the exact ones used to configure the vault and the truststore (if any for truststore as both the truststorePath and truststorePassword are optional, JVM's is used by default).
+In this example, two values should be passed into the Mule runtime at deployment time as a system environment variables `vaultTokenEnvironmentVariable`, `truststorePasswordEnvironmentVariable` as they would contain sensitive information. These properties must be the exact ones used to configure the vault and the truststore (if any for truststore as both the truststorePath and truststorePassword are optional, JVM's is used by default).
 
 **Note**: When using sensitive information as for the token and password above, it is especially important to secure access to the operating system. Anyone who can run a `ps` command or view a Java console will be able to see the decrypted values that are stored in the Mule application's memory.
 
