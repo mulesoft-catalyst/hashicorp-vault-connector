@@ -1,0 +1,17 @@
+#Vault properties. Make sure to have http with tls = false and true for https
+vault:
+  protocol: "http"
+  host: "localhost"
+  port: "8200"
+  storagePath: "secret/gs-vault-config"
+  tls: "false"
+truststore:
+  path: "vault_truststore.jks" 
+propertyName: "example.password"
+#Cache properties
+exp:
+  interval: "5000"
+max:
+  entries: "100"
+entry:
+  ttl: "5000"

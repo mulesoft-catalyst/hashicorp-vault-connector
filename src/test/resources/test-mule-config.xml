@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:hashicorp-vault="http://www.mulesoft.org/schema/mule/hashicorp-vault"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/hashicorp-vault http://www.mulesoft.org/schema/mule/hashicorp-vault/current/mule-hashicorp-vault.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<hashicorp-vault:config name="Hashicorp_Vault_Config"
+		doc:name="Hashicorp Vault Config" doc:id="2be419d8-996a-4332-bd51-0fe5c4829e90">
+		<hashicorp-vault:connection 
+			vaultToken="${vaultTokenEnvironmentVariable}" 
+			vaultHost="${vault.host}" 
+			vaultProtocol="${vault.protocol}" 
+			vaultPort="${vault.port}" 
+			vaultStoragePath="${vault.storagePath}" 
+			truststorePath="${truststore.path}" 
+			truststorePassword="${truststorePasswordEnvironmentVariable}" 
+			tls="${vault.tls}" />
+	</hashicorp-vault:config>
+	<configuration-properties doc:name="Configuration properties"
+		doc:id="44935958-d46b-4de8-af0b-3b0e8161863f" file="${env}.yaml" />
+	<flow name="testFlow" doc:id="2d3c3b07-f7f6-433f-8cf3-f713e705a819">
+		<hashicorp-vault:get-key-value doc:name="Vault: Get Value"
+			doc:id="34c7202d-c528-40e1-ac2b-f7ae6e074671" config-ref="Hashicorp_Vault_Config"
+			key="${propertyName}" />
+	</flow>
+</mule>

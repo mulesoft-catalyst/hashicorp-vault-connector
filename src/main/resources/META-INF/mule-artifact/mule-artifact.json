@@ -1,0 +1,18 @@
+{
+  "minMuleVersion": "4.1.4",
+  "requiredProduct": "MULE_EE",
+  "extensionModelLoaderDescriptor": {
+    "id": "crafted"
+  },
+  "name": "vault-connector",
+  "classLoaderModelLoaderDescriptor": {
+    "id": "mule",
+    "attributes": {
+      "exportedPackages": ["com.mulesoft.secure.properties.internal"]
+    }
+  },
+  "bundleDescriptorLoader": {
+    "id": "mule",
+    "attributes": {}
+  }
+}
