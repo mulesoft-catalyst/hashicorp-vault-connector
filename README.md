@@ -1,4 +1,4 @@
- 
+
 
 # The Hashicorp Vault Mule 4 Module
 
@@ -9,19 +9,24 @@ A hashicorp xml file is configured with a `<hashicorp-vault:config>` tag, for ex
 ```
 	<hashicorp-vault:config name="Hashicorp_Vault_Config"
 		doc:name="Hashicorp Vault Config" doc:id="2be419d8-996a-4332-bd51-0fe5c4829e90">
-		<hashicorp-vault:connection 
-			vaultToken="${vaultTokenEnvironmentVariable}" 
-			vaultHost="${vault.host}" 
-			vaultProtocol="${vault.protocol}" 
-			vaultPort="${vault.port}" 
-			vaultStoragePath="${vault.storagePath}" 
-			truststorePath="${truststore.path}" 
+		<hashicorp-vault:connection
+			vaultToken="${vaultTokenEnvironmentVariable}"
+			vaultHost="${vault.host}"
+			vaultProtocol="${vault.protocol}"
+			vaultPort="${vault.port}"
+			vaultStoragePath="${vault.storagePath}"
+			truststorePath="${truststore.path}"
 			truststorePassword="${truststorePasswordEnvironmentVariable}" tls="true"/>
 	</hashicorp-vault:config>
 ```
 
-In this example, two values should be passed into the Mule runtime at deployment time as a system environment variables `vaultTokenEnvironmentVariable`, `truststorePasswordEnvironmentVariable` as they would contain sensitive information. These properties must be the exact ones used to configure the vault and the truststore (if any for truststore as both the truststorePath and truststorePassword are optional, JVM's is used by default).
+In this example (see below env for linux), two values should be passed into the Mule runtime at deployment time as a system environment variables `vaultTokenEnvironmentVariable`, `truststorePasswordEnvironmentVariable` as they would contain sensitive information. These properties must be the exact ones used to configure the vault and the truststore (if any for truststore as both the truststorePath and truststorePassword are optional, JVM's is used by default).
 
+```
+export truststorePasswordEnvironmentVariable=changeit
+export vaultTokenEnvironmentVariable=49VLojFvnnv5wnIY3GGW9i6x
+export env=local
+```
 **Note**: When using sensitive information as for the token and password above, it is especially important to secure access to the operating system. Anyone who can run a `ps` command or view a Java console will be able to see the decrypted values that are stored in the Mule application's memory.
 
 As this is built as a Mule module, the way to use it within an application is the same as for any other Mule module. Simply search for the Hashicorp Vault module in Exchange from the Mule Palette within Anypoint Studio and then import it from there.
@@ -77,11 +82,15 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 ```
 ## Integration Tests
 
+### Prerequisites
+
+- Docker installed
+
 To execute integration tests a Java library is used [here][1] that allows to spin up a Docker container running an instance of Hashicopr Vault in DEV mode, that is, among other implications, that the connection has the TLS disabled.
 
 There are checks that Testcontainer library performs at initialisation and among those the memory given to the docker, to disable it follow the steps below or for further info see [here][2]
 
-1. create/amend a file under your userhome named `.testcontainers.properties` with the below content. 
+1. create/amend a file under your userhome named `.testcontainers.properties` with the below content.
 
 ```
 checks.disable=true
