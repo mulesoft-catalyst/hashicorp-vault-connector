@@ -75,3 +75,17 @@ http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/cu
 </mule>
 
 ```
+## Integration Tests
+
+To execute integration tests a Java library is used [here][1] that allows to spin up a Docker container running an instance of Hashicopr Vault in DEV mode, that is, among other implications, that the connection has the TLS disabled.
+
+There are checks that Testcontainer library performs at initialisation and among those the memory given to the docker, to disable it follow the steps below or for further info see [here][2]
+
+1. create/amend a file under your userhome named `.testcontainers.properties` with the below content. 
+
+```
+checks.disable=true
+```
+
+[1]: https://www.testcontainers.org/modules/vault/
+[2]: https://www.testcontainers.org/features/configuration/
