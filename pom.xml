@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>64fe4806-309d-4611-90dd-9e6d22542b4d</groupId>
 	<artifactId>hashicorp-vault</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<packaging>mule-extension</packaging>
 	<name>Hashicorp Vault Extension</name>
 

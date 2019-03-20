@@ -93,10 +93,12 @@ public class HashicorpConnection extends AbstractVaultConfiguration{
 		VaultResponseSupport<HashMap> response = vaultTemplate.read(
 				connectionConfigurations.getVaultStoragePath(), HashMap.class);
 		if(response == null ) {
-			throw new IllegalArgumentException("The vault storage path " + 
-					connectionConfigurations.getVaultStoragePath()  + " could not be found in the Vault");
+			throw new IllegalArgumentException("The vault storage path " + connectionConfigurations.getVaultStoragePath() + " could not be found in the Vault");
+		} else if (response.getData().get(key) == null){
+			throw new IllegalArgumentException("The vault key " + key + " could not be found in the Vault");
+		} else {
+			return response.getData().get(key).toString();
 		}
-		return response.getData().get(key).toString();
 	}
 	public void disconnect() throws Exception {
 		vaultTemplate.destroy();
