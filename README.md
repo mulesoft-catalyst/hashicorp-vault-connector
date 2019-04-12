@@ -100,7 +100,7 @@ checks.disable=true
 [2]: https://www.testcontainers.org/features/configuration/
 
 
-## Docker container with Vault initiated and unsealed with two secrets added. Adapted from here. Also here there is a postman collection.
+## How to spin up a docker container with a Vault instance initiated and unsealed with two secrets added. Adapted from [here] (https://www.melvinvivas.com/secrets-management-using-docker-hashicorp-vault/).
 
 * Create folders
   * ``` mkdir -p /Users/<your_user>/Documents/mydata/vault/config```
