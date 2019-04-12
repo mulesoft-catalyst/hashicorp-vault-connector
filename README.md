@@ -98,3 +98,67 @@ checks.disable=true
 
 [1]: https://www.testcontainers.org/modules/vault/
 [2]: https://www.testcontainers.org/features/configuration/
+
+
+## Docker container with Vault initiated and unsealed with two secrets added. Adapted from here. Also here there is a postman collection.
+
+* Create folders
+  * ``` mkdir -p /Users/<your_user>/Documents/mydata/vault/config```
+* Create the config.json file under the config folder:
+  * ```
+  {
+  	"listener": [{
+  		"tcp": {
+  			"address": "0.0.0.0:8200",
+  			"tls_cert_file": "/vault/certs/certificate.pem",
+                                      "tls_key_file": "/vault/certs/key.pem"
+  		}
+  	}],
+  	"storage" :{
+  		"file" : {
+  			"path" : "/vault/data"
+  		}
+  	},
+  	"max_lease_ttl": "10h",
+  	"default_lease_ttl": "10h",
+  }
+  ```
+* Run the docker and automatically log into its shell 
+  * ``` docker exec -it $(docker run -d -p 8200:8200 -v /Users/egiallaurito/mydata/vault:/vault --cap-add=IPC_LOCK vault server) /bin/sh ```
+* Execute the below with http or https based on tls_disable = 1 or 0 respectively (1 = disabled) 
+  * ```export VAULT_ADDR='https://127.0.0.1:8200'```
+* Initialise vault
+  * ```vault init```
+* If you get “Error initializing: Put https://127.0.0.1:8200/v1/sys/init: x509: certificate signed by unknown authority”
+  * ```export VAULT_SKIP_VERIFY=T```
+* Check Status
+  * ```vault status```
+* With the key displayed in the previous cmd to unseal the vault
+  * ```vault unseal "vOcuedZXL8oQXKfltf7tslFAke8zJ4LSQpMApHtWiunK" ```
+  * ```vault unseal "a6ZOTy9IgR5l1W/mwALAFT2ibxlGeHHKTriLFfYRYNPY" ```
+  * ```vault unseal "P1hGOqrslHL+EUc935x/fgakj3rtDoRjWTSc5w8FPBOO" ```
+* With the root token to authenticate
+  * ``` vault auth 49VLojFvnnv5wnIY3GGW9i6x ```
+* Write some secrets
+  * ```vault write secret/sls-invoice/test/credentials example.username=demouser example.password=demopassword```
+  * ```vault write secret/gs-vault-config example.username=clouduser example.password=cloudpassword```
+* Read the values
+  * ``` vault read -format=json secret/gs-vault-config ```
+* Once you're done saving, we can now seal the vault.
+  * ```vault seal```
+* To use HTTPS Create a certificate and private key
+  * ```keytool -genkey -alias server-alias -keyalg RSA -keypass changeit -storepass changeit -keystore keystore.jks -ext SAN=dns:localhost,ip:127.0.0.1 ```
+* Make sure the vault is listening on https and disable the certificate verification
+  * ```export VAULT_ADDR='https://127.0.0.1:8200' ```
+  * ```export VAULT_SKIP_VERIFY='true' ```
+* Export certificate and the key into the docker folder /vault/certs and named them   certificate.pem and key.pem respectively - I used a keyTool available here, there you can import the keystore and then export the certificate as pem and the private key as openssl, see screenshot below.
+Import the certificate.pem into the Java truststore to allow the client to trust the server certificate
+  * ```sudo keytool  -import  -trustcacerts -alias vault-certs  -file /Users/egiallaurito/mydata/vault/certs/certificate.pem -keystore /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/security/cacerts ```
+* In case the java app fails to find a the truststore, add the VM arguments below
+  * ```-Djavax.net.debug=all ```
+  * ```-Djavax.net.ssl.trustStore=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/security/cacerts ```
+
+* To delete the certificate:
+  * ``` keytool -delete -alias vault-certs  -keystore /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre/lib/security/cacerts ```
+
+
