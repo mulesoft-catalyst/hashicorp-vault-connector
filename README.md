@@ -29,7 +29,7 @@ export env=local
 ```
 **Note**: When using sensitive information as for the token and password above, it is especially important to secure access to the operating system. Anyone who can run a `ps` command or view a Java console will be able to see the decrypted values that are stored in the Mule application's memory.
 
-As this is built as a Mule module, the way to use it within an application is the same as for any other Mule module. Simply search for the Hashicorp Vault module in Exchange from the Mule Palette within Anypoint Studio and then import it from there.
+As this is built as a Mule module, the way to use it within an application is the same as for any other Mule module. The prerequisite here is to deploy the module into your instance of Anypoint Exchange, see how [here](https://docs.mulesoft.com/exchange/to-publish-assets-maven). Then, simply search for the Hashicorp Vault module in Exchange from the Mule Palette within Anypoint Studio and then import it from there.
 
 Below a mule xml configuration for a test application that uses this connector.
 
